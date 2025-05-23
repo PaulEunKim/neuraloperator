@@ -14,6 +14,7 @@ dependencies = [
     "numpy>=1.25",
     "opt-einsum",
     "h5py",
+    "fickling>=0.1.3,~=0.1.0",
 ]
 requires-python = ">=3.9"
 readme = "README.rst"

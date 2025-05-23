@@ -1,7 +1,6 @@
 from pathlib import Path
 import random
 from typing import List, Union
-import pickle
 import numpy as np
 
 import torch
@@ -10,6 +9,7 @@ from torch.utils.data import DataLoader
 from .dict_dataset import DictDataset
 from ..transforms.data_processors import DefaultDataProcessor
 from .web_utils import download_from_zenodo_record
+import fickling
 
 
 path = Path(__file__).resolve().parent.joinpath('data')
@@ -192,7 +192,7 @@ class NonlinearPoissonDataset:
 
         # Load the data
         with open(data_path, 'rb') as data_file:
-            data = pickle.load(data_file)
+            data = fickling.load(data_file)
             print("Dictionary loaded successfully.")
         
         random.shuffle(data)
