@@ -66,10 +66,10 @@ class MeshDataModule:
 
         # Read train and test indicies
         with open(root_dir / "train.txt") as file:
-            train_ind = file.readline().split(",")
+            train_ind = file.readline(5_000_000).split(",")
 
         with open(root_dir / "test.txt") as file:
-            test_ind = file.readline().split(",")
+            test_ind = file.readline(5_000_000).split(",")
 
         if n_train is not None:
             if n_train < len(train_ind):
