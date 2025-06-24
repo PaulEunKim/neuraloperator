@@ -1,5 +1,4 @@
 from pathlib import Path
-import random
 from typing import List, Union
 import pickle
 import numpy as np
@@ -10,6 +9,7 @@ from torch.utils.data import DataLoader
 from .dict_dataset import DictDataset
 from ..transforms.data_processors import DefaultDataProcessor
 from .web_utils import download_from_zenodo_record
+import secrets
 
 
 path = Path(__file__).resolve().parent.joinpath('data')
@@ -195,7 +195,7 @@ class NonlinearPoissonDataset:
             data = pickle.load(data_file)
             print("Dictionary loaded successfully.")
         
-        random.shuffle(data)
+        secrets.SystemRandom().shuffle(data)
         train_end_idx = int(0.7*len(data))
         print(f"Loading {n_train} train instances...")
         if n_test > len(data) - train_end_idx:
@@ -407,9 +407,9 @@ class PoissonGINODataProcessor(DefaultDataProcessor):
             n_in = int(input_geom.shape[1] * self.input_sub_level)
         else:
             # Sample random in between range
-            n_in = random.randint(self.input_min, self.input_max)
+            n_in = secrets.SystemRandom().randint(self.input_min, self.input_max)
         
-        input_indices = random.sample(list(range(input_geom.shape[-2])), k=n_in)
+        input_indices = secrets.SystemRandom().sample(list(range(input_geom.shape[-2])), k=n_in)
         x = x[:, input_indices, ...]
         input_geom = input_geom[:, input_indices, ...]
 
@@ -435,8 +435,8 @@ class PoissonGINODataProcessor(DefaultDataProcessor):
         n_bound_out = n_bound * self.output_sub_level
         n_domain_out = output_queries_domain.shape[1] * self.output_sub_level
     
-        output_indices_bound = random.sample(list(range(0, n_bound)), k=int(n_bound_out))
-        output_indices_domain = random.sample(list(range(0, output_queries_domain.shape[1])), k=int(n_domain_out))
+        output_indices_bound = secrets.SystemRandom().sample(list(range(0, n_bound)), k=int(n_bound_out))
+        output_indices_domain = secrets.SystemRandom().sample(list(range(0, output_queries_domain.shape[1])), k=int(n_domain_out))
 
         # boundary points in both output queries and ground truth
         # are only stored separately in train mode
