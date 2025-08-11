@@ -8,10 +8,10 @@ import hashlib
 import logging
 import os
 from pathlib import Path
-import requests
 import sys
 from typing import Any, Optional, Union, List
 import tarfile
+from security import safe_requests
 
 logger = logging.Logger(name=__name__)
 logger.setLevel(logging.root.level)
@@ -91,7 +91,7 @@ def download_from_url(
         return
 
     # download and stream file in chunks
-    with requests.get(url, stream=True) as r:
+    with safe_requests.get(url, stream=True) as r:
         r.raise_for_status()
         with open(fpath, 'wb') as f:
             curr_size = 0
@@ -139,7 +139,7 @@ def download_from_zenodo_record(record_id: str,
     """
     zenodo_api_url = "https://zenodo.org/api/records/"
     url = f"{zenodo_api_url}{record_id}"
-    resp = requests.get(url)
+    resp = safe_requests.get(url)
     assert resp.status_code == 200, f"Error: request failed with status code {resp.status_code}"
     response_json = resp.json()
     for file_record in response_json['files']:
